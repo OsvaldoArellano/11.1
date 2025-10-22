@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block titulo %}Agregar vehículo | Taller Mecanico{% endblock %}
+
+{% block contenido %}
+<article class="form-article">
+    <h1>Agregar vehículo para {{ cliente.nombre }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'app_cliente:detalle_cliente' cliente.id %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</article>
+{% endblock %}

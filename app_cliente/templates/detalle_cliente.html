@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ cliente.nombre }} | Taller Mecanico{% endblock %}
+
+{% block contenido %}
+<article class="artist-detail">
+    <div class="artist-banner">
+        {% if cliente.foto_cliente %}
+            <img src="{{ cliente.foto_cliente.url }}" alt="Foto de {{ cliente.nombre }}" class="detail-photo">
+        {% else %}
+            <div class="detail-placeholder">👤</div>
+        {% endif %}
+        <div class="artist-info">
+            <h1>{{ cliente.nombre }}</h1>
+            <h3>{{ cliente.apellido }}</h3>
+            <h3>{{ cliente.telefono }}</h3>
+            <h3>{{ cliente.email }}</h3>
+            <h3>{{ cliente.rfc }}</h3>
+            <h3>{{ cliente.direccion }}</h3>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{% url 'app_cliente:editar_cliente' cliente.id %}" class="btn btn-secondary">✏️ Editar</a>
+        <a href="{% url 'app_cliente:borrar_cliente' cliente.id %}" class="btn btn-danger">🗑️ Borrar</a>
+    </div>
+
+    <section class="songs-section">
+        <h2>Vehiculos</h2>
+        {% if cliente.vehiculos.exists %}
+        <ul class="song-list">
+            {% for vehiculo in cliente.vehiculos.all %}
+            <li class="vehiculo-item">
+                {% if vehiculo.foto_vehiculo %}
+                    <img src="{{ vehiculo.foto_vehiculo.url }}" alt="Foto de {{ vehiculo.matricula }}" class="detail-photo2">
+                {% endif %}
+                <div class="vehiculo-info">
+                    <strong>{{ vehiculo.marca }} {{ vehiculo.modelo }}</strong>
+                    <div>Matricula: {{ vehiculo.matricula }}</div>
+                    <div>Año: {{ vehiculo.anio }} — Km: {{ vehiculo.kilometraje }}</div>
+                    <div><a href="{% url 'app_cliente:eliminar_vehiculo' cliente.id vehiculo.id %}" class="btn btn-danger">Eliminar</a></div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty-message">Este cliente no tiene vehiculos registrados.</p>
+        {% endif %}
+
+        <div class="add-vehiculo">
+            <a href="{% url 'app_cliente:agregar_vehiculo' cliente.id %}" class="btn btn-primary">➕ Agregar vehículo</a>
+        </div>
+    </section>
+</article>
+{% endblock %}
