@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ cliente.nombre }} | Taller Mecanico{% endblock %}
+
+{% block contenido %}
+<article class="artist-detail">
+    <div class="artist-banner">
+        {% if cliente.foto_cliente %}
+            <img src="{{ cliente.foto_cliente.url }}" alt="Foto de {{ cliente.nombre }}" class="detail-photo">
+        {% else %}
+            <div class="detail-placeholder">👤</div>
+        {% endif %}
+        <div class="artist-info">
+            <h1>{{ cliente.nombre }}</h1>
+            <h3>{{ cliente.apellido }}</h3>
+            <h3>{{ cliente.telefono }}</h3>
+            <h3>{{ cliente.email }}</h3>
+            <h3>{{ cliente.rfc }}</h3>
+            <h3>{{ cliente.direccion }}</h3>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{% url 'app_cliente:editar_cliente' cliente.id %}" class="btn btn-secondary">✏️ Editar</a>
+        <a href="{% url 'app_cliente:borrar_cliente' cliente.id %}" class="btn btn-danger">🗑️ Borrar</a>
+    </div>
+
+    <section class="songs-section">
+        <h2>Vehiculos</h2>
+        {% if cliente.vehiculos.all %}
+        <ul class="song-list">
+            {% if vehiculo.foto_vehiculo %}
+                <img src="{{ vehiculo.foto_vehiculo.url }}" alt="Foto de {{ vehiculo.matricula }}" class="detail-photo2">
+            {% else %}
+                <div class="detail-placeholder2">👤</div>
+            {% endif %}
+        
+            {% for vehiculo in cliente.vehiculos.all %}
+            <li>{{ vehiculo.marca }}</li>
+            <li>{{ vehiculo.modelo }}</li>
+            <li>{{ vehiculo.anio }}</li>
+            <li>{{ vehiculo.matricula }}</li>
+            <li>{{ vehiculo.kilometraje }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty-message">Este cliente no tiene vehiculos registrados.</p>
+        {% endif %}
+    </section>
+</article>
+{% endblock %}
